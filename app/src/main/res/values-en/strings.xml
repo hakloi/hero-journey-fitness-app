@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="squat_button">Squats (manual)</string>
+    <string name="calibration_button">Calibration</string>
+    <string name="statistics_button">Statistics</string>
+    <string name="squats_video_detection">Squats (video)</string>
+    <string name="total_squats_txt">Total squats</string>
+    <string name="total_workouts">Total workouts: %1$d</string>
+    <string name="return_button">Return</string>
+    <string name="delete_all_workouts">Delete all workouts</string>
+    <string name="no_workouts">No workouts</string>
+    <string name="no_calibration">No calibration! Please, calibrate your device first!</string>
+    <string name="to_calibration_button">To calibrate</string>
+    <string name="squat_title">Squats</string>
+    <string name="local_total_squats_txt">Total squats</string>
+    <string name="local_workout">This workout: %1$d</string>
+    <string name="angle_phone">Phone\'s angle:</string>
+    <string name="calibration_txt">Calibration: %1$s°</string>
+    <string name="angle">Δ angle: %1$s°</string>
+    <string name="squat_txt">Squat!</string>
+    <string name="in_progress">In progress...</string>
+    <string name="stand">Stand!</string>
+    <string name="save_button">Save</string>
+    <string name="reset_btn">Reset</string>
+    <string name="advice_angle">A squat is considered when the angle increases by 15-20° and returns back.</string>
+    <string name="delete_workout">Delete</string>
+    <string name="advice">"Advice: Squat down so that the phone leans forward. "</string>
+</resources>

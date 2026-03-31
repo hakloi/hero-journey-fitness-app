@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calibration_button">Калибровка</string>
+    <string name="squat_button">Приседания (manual)</string>
+    <string name="statistics_button">Статистика</string>
+    <string name="squats_video_detection">Приседания (video)</string>
+    <string name="total_squats_txt">Всего приседаний</string>
+    <string name="total_workouts">Проведено тренировок: %1$d</string>
+    <string name="return_button">Назад</string>
+    <string name="delete_all_workouts">Удалить все тренировки</string>
+    <string name="no_workouts">Нет тренировок</string>
+    <string name="no_calibration">Нет калибровки! Пожалуйста, сначала откалибруйтесь в соответствующем разделе.</string>
+    <string name="to_calibration_button">Перейти к калибровке</string>
+    <string name="squat_title">Приседания</string>
+    <string name="local_total_squats_txt">Всего приседаний</string>
+    <string name="local_workout">В этой тренировке: %1$d</string>
+    <string name="angle_phone">Угол наклона телефона:</string>
+    <string name="calibration_txt">Калибровка: %1$s°</string>
+    <string name="angle">Δ угол: %1$s°</string>
+    <string name="squat_txt">Приседаем!</string>
+    <string name="in_progress">В процессе...</string>
+    <string name="stand">Стоим!</string>
+    <string name="save_button">Сохранить</string>
+    <string name="reset_btn">Сбросить</string>
+    <string name="advice_angle">Приседанием считается, когда угол увеличивается на 15-20° и возвращается обратно.</string>
+    <string name="delete_workout">Удалить</string>
+    <string name="advice">Совет: приседайте так, чтобы телефон наклонялся вперед.</string>
+</resources>
