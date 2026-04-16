@@ -27,4 +27,6 @@
     <string name="advice">"Advice: Squat down so that the phone leans forward. "</string>
     <string name="quit_game_btn">Quit</string>
     <string name="settings_btn">Settings</string>
+    <string name="start_patrol">Start patrol</string>
+    <string name="nyc_map">NYC map</string>
 </resources>

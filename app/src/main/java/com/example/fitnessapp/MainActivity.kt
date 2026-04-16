@@ -1,6 +1,11 @@
 package com.example.fitnessapp
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,15 +30,17 @@ import com.example.fitnessapp.view_models.StatisticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fitnessapp.components.MusicPlayerComponent
+import com.example.fitnessapp.services.MusicService
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.example.fitnessapp.view_models.MusicViewModel
 
-//1. учёта количества и глубины приседаний (в предположении, что телефон в руке, а рука
-//поднимается во время приседа вверх);
-
-//MVVM: view -> view model -> model
-// MainActivity.kt
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -47,6 +54,36 @@ class MainActivity : ComponentActivity() {
     private lateinit var calibrationViewModel: CalibrationViewModel
     private lateinit var statisticsViewModel: StatisticsViewModel
 
+    // music
+    private var musicService : MusicService? = null
+    private var isBound = false
+    private lateinit var musicViewModel: MusicViewModel
+
+    // service connection
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as MusicService.MusicBinder
+            musicService = binder.getService()
+            isBound = true
+
+            musicViewModel.updateMusicState(musicService?.isPlaying() == true)
+
+            musicViewModel.setMusicServiceCallback { shouldPlay ->
+                if (shouldPlay) {
+                    musicService?.playMusic()
+                } else {
+                    musicService?.pauseMusic()
+                }
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isBound = false
+            musicService = null
+        }
+    }
+
+    // onCreate()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -60,6 +97,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             FitnessAppTheme {
+                musicViewModel = viewModel()
                 val navController = rememberNavController()
 
                 Box(
@@ -97,8 +135,30 @@ class MainActivity : ComponentActivity() {
                             StatisticsScreen(navController, statisticsViewModel)
                         }
                     }
+                    MusicPlayerComponent(
+                        musicViewModel = musicViewModel,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                            .padding(bottom = 50.dp)
+                    )
                 }
             }
+        }
+    }
+
+    // жизненный цикл сервиса
+    override fun onStart() {
+        super.onStart()
+        Intent(this, MusicService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            startService(intent)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isBound) {
+            unbindService(connection)
+            isBound = false
         }
     }
 }

@@ -27,4 +27,6 @@
     <string name="advice">Совет: приседайте так, чтобы телефон наклонялся вперед.</string>
     <string name="quit_game_btn">Выход</string>
     <string name="settings_btn">Настройки</string>
+    <string name="start_patrol">Начать патруль</string>
+    <string name="nyc_map">NYC карта</string>
 </resources>
