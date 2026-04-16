@@ -70,7 +70,7 @@ fun SpiderSwinging(
             painter = painterResource(R.drawable.spider),
             contentDescription = "Spider",
             modifier = Modifier
-                .size(90.dp),
+                .size(150.dp),
             contentScale = ContentScale.Fit
         )
     }

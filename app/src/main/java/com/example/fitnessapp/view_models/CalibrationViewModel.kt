@@ -37,7 +37,6 @@ class CalibrationViewModel(
                 val angle = calculateTiltAngle(x, y, z)
                 currentAngle.value = angle
 
-                android.util.Log.d("Calibration", "Angle: $angle")
             }
         }
     }

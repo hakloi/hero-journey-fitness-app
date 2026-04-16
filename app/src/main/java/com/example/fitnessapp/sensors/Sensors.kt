@@ -18,7 +18,7 @@ class Sensor(
     private val coroutineScope: CoroutineScope
 ) {
 
-    private val _sharedFlow = MutableSharedFlow<List<Float>>(extraBufferCapacity = 1000)
+    private val _sharedFlow = MutableSharedFlow<List<Float>>(extraBufferCapacity = 1)
     val sharedFlow = _sharedFlow.asSharedFlow()
 
     private val listener = object : SensorEventListener {

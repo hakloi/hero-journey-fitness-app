@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="squat_button">Squats (manual)</string>
+    <string name="squat_button">Squats</string>
     <string name="calibration_button">Calibration</string>
     <string name="statistics_button">Statistics</string>
     <string name="squats_video_detection">Squats (video)</string>
@@ -25,4 +25,6 @@
     <string name="advice_angle">A squat is considered when the angle increases by 15-20° and returns back.</string>
     <string name="delete_workout">Delete</string>
     <string name="advice">"Advice: Squat down so that the phone leans forward. "</string>
+    <string name="quit_game_btn">Quit</string>
+    <string name="settings_btn">Settings</string>
 </resources>

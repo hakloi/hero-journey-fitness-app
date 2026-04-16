@@ -62,6 +62,7 @@ class SquatCounterViewModel(
                 if (calibration != null) {
                     calibrationAngle = calibration.standAngle
                     isCalibrated = true
+                    return@collect
                 }
             }
         }
@@ -74,7 +75,6 @@ class SquatCounterViewModel(
             SquatState.UP -> {
                 if (deltaAngle > squatThreshold) {
                     currentState = SquatState.DOWN
-                    android.util.Log.d("Squat", "Start squat at angle: $angle")
                 }
             }
             SquatState.DOWN -> {
@@ -82,7 +82,6 @@ class SquatCounterViewModel(
                     currentState = SquatState.UP
                     totalCount.value++
                     currentSessionCount.value++
-                    android.util.Log.d("Squat", "Complete squat #${totalCount.value}")
                 }
             }
         }
@@ -98,7 +97,6 @@ class SquatCounterViewModel(
     }
 
     fun resetCount() {
-        totalCount.value = 0
         currentSessionCount.value = 0
     }
 

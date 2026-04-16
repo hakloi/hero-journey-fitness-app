@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="calibration_button">Калибровка</string>
-    <string name="squat_button">Приседания (manual)</string>
+    <string name="squat_button">Приседания</string>
     <string name="statistics_button">Статистика</string>
     <string name="squats_video_detection">Приседания (video)</string>
     <string name="total_squats_txt">Всего приседаний</string>
@@ -25,4 +25,6 @@
     <string name="advice_angle">Приседанием считается, когда угол увеличивается на 15-20° и возвращается обратно.</string>
     <string name="delete_workout">Удалить</string>
     <string name="advice">Совет: приседайте так, чтобы телефон наклонялся вперед.</string>
+    <string name="quit_game_btn">Выход</string>
+    <string name="settings_btn">Настройки</string>
 </resources>

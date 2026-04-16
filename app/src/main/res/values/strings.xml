@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">FitnessApp</string>
     <string name="calibration_button">Калибровка</string>
-    <string name="squat_button">Приседания (manual)</string>
+    <string name="squat_button">Приседания</string>
     <string name="gymace_home_screen" translatable="false">Hero Training Journey</string>
     <string name="statistics_button">Статистика</string>
     <string name="squats_video_detection">Приседания (video)</string>
@@ -26,4 +26,6 @@
     <string name="advice">"Совет: приседайте так, чтобы телефон наклонялся вперед. "</string>
     <string name="advice_angle">Приседанием считается, когда угол увеличивается на 15-20° и возвращается обратно.</string>
     <string name="delete_workout">Удалить</string>
+    <string name="quit_game_btn">Выход</string>
+    <string name="settings_btn">Настройки</string>
 </resources>

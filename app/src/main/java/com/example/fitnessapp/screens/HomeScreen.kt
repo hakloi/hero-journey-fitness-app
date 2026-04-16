@@ -1,5 +1,6 @@
 package com.example.fitnessapp.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,20 +16,21 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
-import com.example.fitnessapp.ui.theme.MyAppFont
 import com.example.fitnessapp.ui.theme.SpiderSwinging
 
+@SuppressLint("ContextCastToActivity")
 @Composable
 fun HomeScreen(navController: NavController) {
+    val activity = LocalContext.current as? android.app.Activity
 
 
     Box(
@@ -57,56 +59,61 @@ fun HomeScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-//        title
+        //        title
         Text(
             text = stringResource(R.string.gymace_home_screen),
-            fontFamily = MyAppFont,
-            fontWeight = FontWeight.Bold,
-            fontSize = 50.sp,
             color = Color.White,
-            style = TextStyle(
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.headlineLarge.copy(
                 shadow = Shadow(
                     color = Color.Black,
                     offset = Offset(2f, 2f),
                     blurRadius = 4f
                 )
             ),
-            textAlign = TextAlign.Center,
-
-            modifier = Modifier.padding(bottom = 40.dp)
+            modifier = Modifier.padding(bottom = 20.dp)
         )
 
         val buttonModifier = Modifier
             .width(250.dp)
             .height(45.dp)
 
-        //        1. calibration
-        Button(onClick = { navController.navigate("calibration") },
+        //  start patrol
+        Button(onClick = { navController.navigate("patrol") },
                buttonModifier)
         {
-            Text(stringResource(R.string.calibration_button),
+            Text("Start patrol",
                 style = MaterialTheme.typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(20.dp))
-        //        2. squat exercise
-        Button(onClick = { navController.navigate("squat") },
+        //  NYC map
+        Button(onClick = { navController.navigate("nyc_map") },
             buttonModifier
         ) {
-            Text(stringResource(R.string.squat_button),
+            Text("NYC map",
                 style = MaterialTheme.typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(20.dp))
-        //        3. squat with video exercise
-        Button(onClick = { navController.navigate("squat_video") },
-            buttonModifier) {
-            Text(stringResource(R.string.squats_video_detection),
-                style = MaterialTheme.typography.bodyLarge)
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        //      4. statistics
+        //  statistics
         Button(onClick = {navController.navigate("statistics")},
             buttonModifier) {
             Text(stringResource(R.string.statistics_button),
+                style = MaterialTheme.typography.bodyLarge)
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        // settings
+        Button(onClick = {navController.navigate("settings")},
+            buttonModifier) {
+            Text(
+                stringResource(R.string.settings_btn),
+                style = MaterialTheme.typography.bodyLarge)
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        // quit
+        Button(onClick = { activity?.finish() },
+            buttonModifier) {
+            Text(
+                stringResource(R.string.quit_game_btn),
                 style = MaterialTheme.typography.bodyLarge)
         }
         Spacer(modifier = Modifier.height(20.dp))
