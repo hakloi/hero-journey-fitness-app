@@ -21,6 +21,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fitnessapp.repository.FitnessRepository
 import com.example.fitnessapp.screens.CalibrationScreen
 import com.example.fitnessapp.screens.HomeScreen
+import com.example.fitnessapp.screens.PatrolScreen
+import com.example.fitnessapp.screens.PetersWarmupScreen
 import com.example.fitnessapp.screens.SquatScreen
 import com.example.fitnessapp.screens.StatisticsScreen
 import com.example.fitnessapp.sensors.Sensors
@@ -30,11 +32,8 @@ import com.example.fitnessapp.view_models.StatisticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnessapp.components.MusicPlayerComponent
 import com.example.fitnessapp.services.MusicService
@@ -122,6 +121,8 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         composable("home") { HomeScreen(navController) }
+                        composable("patrol") { PatrolScreen(navController) }
+                        composable("peters_warmup") { PetersWarmupScreen(navController) }
                         composable("calibration") {
                             CalibrationScreen(navController, calibrationViewModel)
                         }
@@ -137,8 +138,7 @@ class MainActivity : ComponentActivity() {
                     }
                     MusicPlayerComponent(
                         musicViewModel = musicViewModel,
-                        modifier = Modifier.align(Alignment.BottomCenter)
-                            .padding(bottom = 50.dp)
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }

@@ -1,6 +1,11 @@
 package com.example.fitnessapp.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.overscroll
+import androidx.compose.foundation.rememberOverscrollEffect
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -10,9 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.theme.AppTextStyles
 import com.example.fitnessapp.view_models.SquatCounterViewModel
 
 @SuppressLint("DefaultLocale")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SquatScreen(
     navController: NavController,
@@ -22,6 +29,9 @@ fun SquatScreen(
     val totalCount by squatViewModel.totalCount
     val currentSessionCount by squatViewModel.currentSessionCount
     val currentAngle by squatViewModel.currentAngle
+    val scrollState = rememberScrollState()
+    val overscrollEffect = rememberOverscrollEffect()
+    val menuButtonTextStyle = AppTextStyles.menuButton()
     val hasCalibration = squatViewModel.hasCalibration()
     val calibrationAngle = squatViewModel.getCalibrationAngle()
 
@@ -37,9 +47,11 @@ fun SquatScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
+            .overscroll(overscrollEffect)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         // Заголовок
         Text(
@@ -70,7 +82,10 @@ fun SquatScreen(
                 onClick = { navController.navigate("calibration") },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.to_calibration_button))
+                Text(
+                    text = stringResource(R.string.to_calibration_button),
+                    style = menuButtonTextStyle
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -79,7 +94,10 @@ fun SquatScreen(
                 onClick = { navController.navigateUp() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.return_button))
+                Text(
+                    text = stringResource(R.string.return_button),
+                    style = menuButtonTextStyle
+                )
             }
 
             return@Column
@@ -208,7 +226,10 @@ fun SquatScreen(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text(stringResource(R.string.save_button))
+                Text(
+                    text = stringResource(R.string.save_button),
+                    style = menuButtonTextStyle
+                )
             }
 
             Button(
@@ -218,7 +239,10 @@ fun SquatScreen(
                     containerColor = MaterialTheme.colorScheme.secondary
                 )
             ) {
-                Text(stringResource(R.string.reset_btn))
+                Text(
+                    text = stringResource(R.string.reset_btn),
+                    style = menuButtonTextStyle
+                )
             }
         }
 
@@ -228,7 +252,10 @@ fun SquatScreen(
             onClick = { navController.navigateUp() },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(R.string.return_button))
+            Text(
+                text = stringResource(R.string.return_button),
+                style = menuButtonTextStyle
+            )
         }
 
         // Подсказка

@@ -1,7 +1,12 @@
 package com.example.fitnessapp.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.overscroll
+import androidx.compose.foundation.rememberOverscrollEffect
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -21,13 +26,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.components.MusicPlayerComponent
+import com.example.fitnessapp.ui.theme.AppTextStyles
 import com.example.fitnessapp.ui.theme.SpiderSwinging
 import com.example.fitnessapp.view_models.MusicViewModel
 
 @SuppressLint("ContextCastToActivity")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     val activity = LocalContext.current as? android.app.Activity
+    val menuButtonTextStyle = AppTextStyles.menuButton()
+    val scrollState = rememberScrollState()
+    val overscrollEffect = rememberOverscrollEffect()
 
     Box(
         modifier = Modifier
@@ -51,6 +61,8 @@ fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
+            .overscroll(overscrollEffect)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -80,7 +92,7 @@ fun HomeScreen(navController: NavController) {
         {
             Text(
                 stringResource(R.string.start_patrol),
-                style = MaterialTheme.typography.bodyLarge)
+                style = menuButtonTextStyle)
         }
         Spacer(modifier = Modifier.height(20.dp))
         //  NYC map
@@ -89,14 +101,14 @@ fun HomeScreen(navController: NavController) {
         ) {
             Text(
                 stringResource(R.string.nyc_map),
-                style = MaterialTheme.typography.bodyLarge)
+                style = menuButtonTextStyle)
         }
         Spacer(modifier = Modifier.height(20.dp))
         //  statistics
         Button(onClick = {navController.navigate("statistics")},
             buttonModifier) {
             Text(stringResource(R.string.statistics_button),
-                style = MaterialTheme.typography.bodyLarge)
+                style = menuButtonTextStyle)
         }
         Spacer(modifier = Modifier.height(20.dp))
         // settings
@@ -104,7 +116,7 @@ fun HomeScreen(navController: NavController) {
             buttonModifier) {
             Text(
                 stringResource(R.string.settings_btn),
-                style = MaterialTheme.typography.bodyLarge)
+                style = menuButtonTextStyle)
         }
         Spacer(modifier = Modifier.height(20.dp))
         // quit
@@ -112,7 +124,7 @@ fun HomeScreen(navController: NavController) {
             buttonModifier) {
             Text(
                 stringResource(R.string.quit_game_btn),
-                style = MaterialTheme.typography.bodyLarge)
+                style = menuButtonTextStyle)
         }
         Spacer(modifier = Modifier.height(20.dp))
     }

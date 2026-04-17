@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fitnessapp.R
+import com.example.fitnessapp.ui.theme.AppTextStyles
 
 @Composable
 fun StatisticsScreen(
@@ -25,6 +26,7 @@ fun StatisticsScreen(
 ) {
     val exercises by viewModel.exercises.collectAsState()
     val totalSquats by viewModel.totalSquats.collectAsState()
+    val menuButtonTextStyle = AppTextStyles.menuButton()
 
     Column(
         modifier = Modifier
@@ -38,7 +40,10 @@ fun StatisticsScreen(
             onClick = { navController.navigateUp() },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(stringResource(R.string.return_button))
+            Text(
+                text = stringResource(R.string.return_button),
+                style = menuButtonTextStyle
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -86,7 +91,10 @@ fun StatisticsScreen(
                     containerColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text(stringResource(R.string.delete_all_workouts))
+                Text(
+                    text = stringResource(R.string.delete_all_workouts),
+                    style = menuButtonTextStyle
+                )
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -151,7 +159,10 @@ fun ExerciseItem(
                     containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
                 )
             ) {
-                Text(stringResource(R.string.delete_workout))
+                Text(
+                    text = stringResource(R.string.delete_workout),
+                    style = AppTextStyles.menuButton()
+                )
             }
         }
     }

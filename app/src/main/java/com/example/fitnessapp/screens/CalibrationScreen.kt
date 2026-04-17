@@ -1,16 +1,36 @@
 package com.example.fitnessapp.screens
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.overscroll
+import androidx.compose.foundation.rememberOverscrollEffect
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.fitnessapp.ui.theme.AppTextStyles
 import com.example.fitnessapp.view_models.CalibrationViewModel
 
 @SuppressLint("DefaultLocale")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CalibrationScreen(
     navController: NavController,
@@ -21,22 +41,25 @@ fun CalibrationScreen(
     val isCalibrated by viewModel.isCalibrated
     val isCalibrating by viewModel.isCalibrating
     val countdown by viewModel.countdown
+    val scrollState = rememberScrollState()
+    val overscrollEffect = rememberOverscrollEffect()
+    val menuButtonTextStyle = AppTextStyles.menuButton()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
+            .overscroll(overscrollEffect)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
-        // Заголовок
         Text(
             text = "Калибровка",
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.padding(bottom = 32.dp)
         )
 
-        // Текущий угол
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -60,16 +83,13 @@ fun CalibrationScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Инструкция
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
             )
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "Инструкция:",
                     style = MaterialTheme.typography.titleSmall
@@ -77,9 +97,9 @@ fun CalibrationScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "1. Встаньте прямо\n" +
-                            "2. Держите телефон вертикально\n" +
-                            "3. Нажмите 'Калибровать'\n" +
-                            "4. Замрите на 3 секунды",
+                        "2. Держите телефон вертикально\n" +
+                        "3. Нажмите 'Калибровать'\n" +
+                        "4. Замрите на 3 секунды",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -87,7 +107,6 @@ fun CalibrationScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Отображение калибровки
         if (isCalibrated && calibrationAngle != null) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -100,7 +119,7 @@ fun CalibrationScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "✓ Калибровка выполнена!",
+                        text = "Калибровка выполнена!",
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
@@ -123,24 +142,32 @@ fun CalibrationScreen(
                         containerColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Сбросить")
+                    Text(
+                        text = "Сбросить",
+                        style = menuButtonTextStyle
+                    )
                 }
 
                 Button(
                     onClick = { navController.navigateUp() },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Назад")
+                    Text(
+                        text = "Назад",
+                        style = menuButtonTextStyle
+                    )
                 }
             }
         } else {
-            // Кнопка калибровки
             Button(
                 onClick = { viewModel.startCalibration() },
                 enabled = !isCalibrating,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (isCalibrating) "Калибровка..." else "Начать калибровку")
+                Text(
+                    text = if (isCalibrating) "Калибровка..." else "Начать калибровку",
+                    style = menuButtonTextStyle
+                )
             }
 
             if (isCalibrating) {
@@ -158,7 +185,10 @@ fun CalibrationScreen(
                 onClick = { navController.navigateUp() },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Назад")
+                Text(
+                    text = "Назад",
+                    style = menuButtonTextStyle
+                )
             }
         }
     }
