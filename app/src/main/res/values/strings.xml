@@ -30,4 +30,12 @@
     <string name="settings_btn">Настройки</string>
     <string name="start_patrol">Start patrol</string>
     <string name="nyc_map">NYC map</string>
+    <string name="tab_chart">Chart</string>
+    <string name="tab_table">Table</string>
+    <string name="total_workouts_label">Workouts</string>
+    <string name="chart_last_7_days">Last 7 days</string>
+    <string name="settings_reminder_title">Workout Reminder</string>
+    <string name="settings_reminder_enable">Enable daily reminder</string>
+    <string name="settings_reminder_time">Time: %1$02d:%2$02d</string>
+    <string name="settings_reminder_change_time">Change time</string>
 </resources>

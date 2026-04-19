@@ -24,6 +24,8 @@ import com.example.fitnessapp.screens.HomeScreen
 import com.example.fitnessapp.screens.PatrolScreen
 import com.example.fitnessapp.screens.PetersWarmupScreen
 import com.example.fitnessapp.screens.SquatScreen
+import com.example.fitnessapp.screens.NYCMapScreen
+import com.example.fitnessapp.screens.SettingsScreen
 import com.example.fitnessapp.screens.StatisticsScreen
 import com.example.fitnessapp.sensors.Sensors
 import com.example.fitnessapp.view_models.CalibrationViewModel
@@ -132,6 +134,8 @@ class MainActivity : ComponentActivity() {
                         composable("squat_video") {
                             SquatScreen(navController, squatViewModel)
                         }
+                        composable("nyc_map") { NYCMapScreen(navController) }
+                        composable("settings") { SettingsScreen(navController) }
                         composable("statistics") {
                             StatisticsScreen(navController, statisticsViewModel)
                         }
