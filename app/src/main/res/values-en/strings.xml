@@ -33,8 +33,9 @@
     <string name="tab_table">Table</string>
     <string name="total_workouts_label">Workouts</string>
     <string name="chart_last_7_days">Last 7 days</string>
+    <string name="settings_bg_title">Background</string>
     <string name="settings_reminder_title">Workout Reminder</string>
-    <string name="settings_reminder_enable">Enable daily reminder</string>
+    <string name="settings_reminder_enable">Daily reminder</string>
     <string name="settings_reminder_time">Time: %1$02d:%2$02d</string>
     <string name="settings_reminder_change_time">Change time</string>
 </resources>

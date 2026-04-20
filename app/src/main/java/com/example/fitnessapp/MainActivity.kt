@@ -24,6 +24,7 @@ import com.example.fitnessapp.screens.HomeScreen
 import com.example.fitnessapp.screens.PatrolScreen
 import com.example.fitnessapp.screens.PetersWarmupScreen
 import com.example.fitnessapp.screens.SquatScreen
+import com.example.fitnessapp.screens.BG_DRAWABLES
 import com.example.fitnessapp.screens.NYCMapScreen
 import com.example.fitnessapp.screens.SettingsScreen
 import com.example.fitnessapp.screens.StatisticsScreen
@@ -34,12 +35,18 @@ import com.example.fitnessapp.view_models.StatisticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import androidx.compose.foundation.Image
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitnessapp.components.MusicPlayerComponent
 import com.example.fitnessapp.services.MusicService
 import com.example.fitnessapp.ui.theme.FitnessAppTheme
+import com.example.fitnessapp.ui.theme.parallax
 import com.example.fitnessapp.view_models.MusicViewModel
 
 @AndroidEntryPoint
@@ -101,14 +108,27 @@ class MainActivity : ComponentActivity() {
                 musicViewModel = viewModel()
                 val navController = rememberNavController()
 
+                val prefs = remember {
+                    getSharedPreferences("settings_prefs", Context.MODE_PRIVATE)
+                }
+                var bgIndex by remember { mutableIntStateOf(prefs.getInt("bg_index", 0)) }
+
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.bg_miles),
+                        painter = painterResource(id = BG_DRAWABLES[bgIndex]),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
+                                            .graphicsLayer(
+                                                scaleX = 1.1f,
+                                                scaleY = 1.1f
+                                            )
+                                            .parallax(
+                                            maxOffsetX = 40f,
+                                            maxOffsetY = 40f,
+                                            sensitivity = 0.4f)
                     )
 
                     Box(
@@ -135,7 +155,7 @@ class MainActivity : ComponentActivity() {
                             SquatScreen(navController, squatViewModel)
                         }
                         composable("nyc_map") { NYCMapScreen(navController) }
-                        composable("settings") { SettingsScreen(navController) }
+                        composable("settings") { SettingsScreen(navController, onBgChange = { bgIndex = it }) }
                         composable("statistics") {
                             StatisticsScreen(navController, statisticsViewModel)
                         }

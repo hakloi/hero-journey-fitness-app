@@ -33,8 +33,9 @@
     <string name="tab_table">Таблица</string>
     <string name="total_workouts_label">Тренировок</string>
     <string name="chart_last_7_days">Последние 7 дней</string>
+    <string name="settings_bg_title">Фон</string>
     <string name="settings_reminder_title">Напоминание о тренировке</string>
-    <string name="settings_reminder_enable">Включить ежедневное напоминание</string>
+    <string name="settings_reminder_enable">Ежедневное напоминание</string>
     <string name="settings_reminder_time">Время: %1$02d:%2$02d</string>
     <string name="settings_reminder_change_time">Изменить время</string>
 </resources>

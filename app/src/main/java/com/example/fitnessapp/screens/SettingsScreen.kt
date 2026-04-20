@@ -22,20 +22,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ReminderReceiver
 import com.example.fitnessapp.ui.theme.AppTextStyles
 import java.util.*
 
+val BG_DRAWABLES = listOf(
+    R.drawable.bg_miles,
+    R.drawable.bg_miguel,
+    R.drawable.bg_miles_morales,
+    R.drawable.bg_gwen_miles,
+    R.drawable.bg_gwen,
+    R.drawable.bg_gwen_2,
+    R.drawable.bg_spiderman,
+    R.drawable.bg_liberty_statue
+)
+
+val SoftCyan = Color(0xFF4DD0E1).copy(alpha = 0.75f)
+
 @Composable
-fun SettingsScreen(navController: NavController) {
+fun SettingsScreen(navController: NavController, onBgChange: (Int) -> Unit = {}) {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("settings_prefs", Context.MODE_PRIVATE) }
 
     var reminderEnabled by remember { mutableStateOf(prefs.getBoolean("reminder_enabled", false)) }
     var reminderHour by remember { mutableIntStateOf(prefs.getInt("reminder_hour", 9)) }
     var reminderMinute by remember { mutableIntStateOf(prefs.getInt("reminder_minute", 0)) }
+    var bgIndex by remember { mutableIntStateOf(prefs.getInt("bg_index", 0)) }
 
     val menuButtonTextStyle = AppTextStyles.menuButton()
     val regularInfoTextStyle = AppTextStyles.regularInfo()
@@ -45,7 +60,7 @@ fun SettingsScreen(navController: NavController) {
     ) { granted ->
         if (granted) {
             reminderEnabled = true
-            prefs.edit().putBoolean("reminder_enabled", true).apply()
+            prefs.edit { putBoolean("reminder_enabled", true) }
             scheduleReminder(context, reminderHour, reminderMinute)
         }
     }
@@ -61,7 +76,7 @@ fun SettingsScreen(navController: NavController) {
             }
         }
         reminderEnabled = true
-        prefs.edit().putBoolean("reminder_enabled", true).apply()
+        prefs.edit { putBoolean("reminder_enabled", true) }
         scheduleReminder(context, reminderHour, reminderMinute)
     }
 
@@ -77,6 +92,52 @@ fun SettingsScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // --- Фон ---
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xB3161616))
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    stringResource(R.string.settings_bg_title),
+                    color = Color.White,
+                    style = regularInfoTextStyle,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = {
+                    bgIndex = (bgIndex - 1 + BG_DRAWABLES.size) % BG_DRAWABLES.size
+                    prefs.edit { putInt("bg_index", bgIndex) }
+                    onBgChange(bgIndex)
+                }) {
+                    Text("‹", style = menuButtonTextStyle, color = Color.White)
+                }
+                Text(
+                    "${bgIndex + 1}",
+                    style = regularInfoTextStyle,
+                    color = SoftCyan,
+                    textAlign = TextAlign.Center
+                )
+                IconButton(onClick = {
+                    bgIndex = (bgIndex + 1) % BG_DRAWABLES.size
+                    prefs.edit { putInt("bg_index", bgIndex) }
+                    onBgChange(bgIndex)
+                }) {
+                    Text("›", style = menuButtonTextStyle, color = Color.White)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // --- Напоминание ---
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -96,11 +157,10 @@ fun SettingsScreen(navController: NavController) {
                     Switch(
                         checked = reminderEnabled,
                         onCheckedChange = { enabled ->
-                            if (enabled) {
-                                tryEnableReminder()
-                            } else {
+                            if (enabled) tryEnableReminder()
+                            else {
                                 reminderEnabled = false
-                                prefs.edit().putBoolean("reminder_enabled", false).apply()
+                                prefs.edit { putBoolean("reminder_enabled", false) }
                                 cancelReminder(context)
                             }
                         },
@@ -120,7 +180,7 @@ fun SettingsScreen(navController: NavController) {
                     ) {
                         Text(
                             stringResource(R.string.settings_reminder_time, reminderHour, reminderMinute),
-                            color = Color(0xFFE0E0E0),
+                            color = SoftCyan,
                             style = regularInfoTextStyle
                         )
                         Button(
@@ -128,15 +188,18 @@ fun SettingsScreen(navController: NavController) {
                                 TimePickerDialog(context, { _, h, m ->
                                     reminderHour = h
                                     reminderMinute = m
-                                    prefs.edit().putInt("reminder_hour", h).putInt("reminder_minute", m).apply()
+                                    prefs.edit { putInt("reminder_hour", h); putInt("reminder_minute", m) }
                                     scheduleReminder(context, h, m)
                                 }, reminderHour, reminderMinute, true).show()
                             },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8E1717))
+                            colors = ButtonDefaults.buttonColors(containerColor = SoftCyan)
                         ) {
-                            Text(stringResource(R.string.settings_reminder_change_time),
+                            Text(
+                                stringResource(R.string.settings_reminder_change_time),
                                 style = regularInfoTextStyle,
-                                textAlign = TextAlign.Center)
+                                textAlign = TextAlign.Center,
+                                color = Color.Black
+                            )
                         }
                     }
                 }
@@ -159,7 +222,6 @@ fun scheduleReminder(context: Context, hour: Int, minute: Int) {
         set(Calendar.MILLISECOND, 0)
         if (timeInMillis <= System.currentTimeMillis()) add(Calendar.DAY_OF_YEAR, 1)
     }
-    // setAndAllowWhileIdle не требует SCHEDULE_EXACT_ALARM
     alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
 }
 
