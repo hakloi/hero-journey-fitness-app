@@ -25,7 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
-import com.example.fitnessapp.ReminderReceiver
+import com.example.fitnessapp.services.ReminderReceiver
 import com.example.fitnessapp.ui.theme.AppTextStyles
 import java.util.*
 
@@ -90,7 +90,7 @@ fun SettingsScreen(navController: NavController, onBgChange: (Int) -> Unit = {})
             Text(stringResource(R.string.return_button), style = menuButtonTextStyle)
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         // --- Фон ---
         Card(
@@ -135,7 +135,7 @@ fun SettingsScreen(navController: NavController, onBgChange: (Int) -> Unit = {})
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // --- Напоминание ---
         Card(
@@ -144,10 +144,6 @@ fun SettingsScreen(navController: NavController, onBgChange: (Int) -> Unit = {})
             colors = CardDefaults.cardColors(containerColor = Color(0xB3161616))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(stringResource(R.string.settings_reminder_title), color = Color.White, style = regularInfoTextStyle)
-
-                Spacer(modifier = Modifier.height(12.dp))
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,

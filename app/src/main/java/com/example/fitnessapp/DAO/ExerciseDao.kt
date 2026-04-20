@@ -5,15 +5,19 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.fitnessapp.entities.ExerciseEntity
+import com.example.fitnessapp.entities.ExerciseType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExerciseDao {
-    @Query("SELECT * from exercise ORDER BY timestamp DESC")
+    @Query("SELECT * FROM exercise ORDER BY timestamp DESC")
     fun getAllExercises(): Flow<List<ExerciseEntity>>
 
     @Query("SELECT SUM(count) FROM exercise")
     fun getTotalSquats(): Flow<Int?>
+
+    @Query("SELECT SUM(count) FROM exercise WHERE exerciseType = :type")
+    fun getTotalByType(type: ExerciseType): Flow<Int?>
 
     @Insert
     suspend fun addExercise(exercise: ExerciseEntity)

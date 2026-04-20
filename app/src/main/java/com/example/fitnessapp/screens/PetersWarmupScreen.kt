@@ -39,10 +39,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.AppTextStyles
+import com.example.fitnessapp.view_models.PetersWarmupViewModel
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.pose.Pose
 import com.google.mlkit.vision.pose.PoseDetection
@@ -58,7 +60,10 @@ private enum class JumpingJackState {
 }
 
 @Composable
-fun PetersWarmupScreen(navController: NavController) {
+fun PetersWarmupScreen(
+    navController: NavController,
+    viewModel: PetersWarmupViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraExecutor: ExecutorService = remember { Executors.newSingleThreadExecutor() }
@@ -217,7 +222,10 @@ fun PetersWarmupScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Button(
-                    onClick = {} , // заглушка
+                    onClick = {
+                        viewModel.saveSession(reps)
+                        reps = 0
+                    },
                     modifier = Modifier
                 ) {
                     Text(

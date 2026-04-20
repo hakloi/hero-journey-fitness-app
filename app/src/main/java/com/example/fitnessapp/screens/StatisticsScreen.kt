@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -21,10 +23,35 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.fitnessapp.R
 import com.example.fitnessapp.entities.ExerciseEntity
+import com.example.fitnessapp.entities.ExerciseType
 import com.example.fitnessapp.ui.theme.AppTextStyles
 import com.example.fitnessapp.view_models.StatisticsViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+
+private val categoryColors = mapOf(
+    ExerciseType.CARDIO      to Color(0xFFE53935),
+    ExerciseType.LOWER_BODY  to Color(0xFF1E88E5),
+    ExerciseType.UPPER_BODY  to Color(0xFF43A047),
+    ExerciseType.CORE        to Color(0xFFFB8C00),
+    ExerciseType.MOBILITY    to Color(0xFF8E24AA)
+)
+
+private val categoryLabels = mapOf(
+    ExerciseType.CARDIO      to "Cardio",
+    ExerciseType.LOWER_BODY  to "Lower Body",
+    ExerciseType.UPPER_BODY  to "Upper Body",
+    ExerciseType.CORE        to "Core",
+    ExerciseType.MOBILITY    to "Mobility"
+)
+
+private val exerciseNames = mapOf(
+    ExerciseType.CARDIO      to "Peter's Warmup",
+    ExerciseType.LOWER_BODY  to "Thunder Kick",
+    ExerciseType.UPPER_BODY  to "Wall Crawler",
+    ExerciseType.CORE        to "Leap of Faith",
+    ExerciseType.MOBILITY    to "Gwen's Rest"
+)
 
 @Composable
 fun StatisticsScreen(
@@ -32,7 +59,8 @@ fun StatisticsScreen(
     viewModel: StatisticsViewModel = hiltViewModel()
 ) {
     val exercises by viewModel.exercises.collectAsState()
-    val totalSquats by viewModel.totalSquats.collectAsState()
+    val streak by viewModel.streak.collectAsState()
+    val categoryTotals by viewModel.categoryTotals.collectAsState()
     val menuButtonTextStyle = AppTextStyles.menuButton()
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -58,7 +86,8 @@ fun StatisticsScreen(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                StatSummaryItem(stringResource(R.string.total_squats_txt), "$totalSquats")
+                StatSummaryItem("Missions", "$streak") // заглушка
+                StatSummaryItem("Streak", "$streak")
                 StatSummaryItem(stringResource(R.string.total_workouts_label), "${exercises.size}")
             }
         }
@@ -94,7 +123,7 @@ fun StatisticsScreen(
             }
         } else {
             when (selectedTab) {
-                0 -> SquatBarChart(exercises)
+                0 -> CategoryPieChart(categoryTotals)
                 1 -> ExerciseTable(exercises, viewModel::deleteExercise, viewModel::deleteAllExercises)
             }
         }
@@ -110,47 +139,79 @@ private fun StatSummaryItem(label: String, value: String) {
 }
 
 @Composable
-private fun SquatBarChart(exercises: List<ExerciseEntity>) {
-    val fmt = SimpleDateFormat("dd.MM", Locale.getDefault())
-    val byDay: List<Map.Entry<String, List<ExerciseEntity>>> = exercises
-        .groupBy { e -> fmt.format(Date(e.timestamp)) }
-        .entries.toList().takeLast(7)
-    val maxVal = byDay.maxOfOrNull { entry -> entry.value.sumOf { e: ExerciseEntity -> e.count } }?.toFloat() ?: 1f
-    val barColor = Color(0xFFE53935)
-    val labelColor = Color(0xFFE0E0E0)
+private fun CategoryPieChart(categoryTotals: Map<ExerciseType, Int>) {
+    val total = categoryTotals.values.sum().toFloat()
+    val nonZero = categoryTotals.filter { it.value > 0 }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            stringResource(R.string.chart_last_7_days),
-            color = Color.White,
-            style = AppTextStyles.menuButton(),
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(Color(0xB3161616), RoundedCornerShape(12.dp))
-                .padding(16.dp)
+    if (total == 0f) {
+        Box(modifier = Modifier.fillMaxWidth().height(300.dp), contentAlignment = Alignment.Center) {
+            Text(stringResource(R.string.no_workouts), color = Color.White)
+        }
+        return
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier.size(220.dp),
+            contentAlignment = Alignment.Center
         ) {
-            val barCount = byDay.size
-            if (barCount == 0) return@Canvas
-            val barWidth = (size.width / barCount) * 0.6f
-            val gap = (size.width / barCount) * 0.4f
-            byDay.forEachIndexed { i, entry ->
-                val total = entry.value.sumOf { e: ExerciseEntity -> e.count }.toFloat()
-                val barH = (total / maxVal) * (size.height - 24.dp.toPx())
-                val x = i * (barWidth + gap) + gap / 2f
-                val y = size.height - barH - 20.dp.toPx()
-                drawRect(color = barColor, topLeft = Offset(x, y), size = Size(barWidth, barH))
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                val strokeWidth = 48.dp.toPx()
+                val radius = (size.minDimension - strokeWidth) / 2f
+                val topLeft = Offset(center.x - radius, center.y - radius)
+                val arcSize = Size(radius * 2, radius * 2)
+                var startAngle = -90f
+                nonZero.forEach { (type, count) ->
+                    val sweep = (count / total) * 360f
+                    drawArc(
+                        color = categoryColors[type] ?: Color.Gray,
+                        startAngle = startAngle,
+                        sweepAngle = sweep - 1f,
+                        useCenter = false,
+                        topLeft = topLeft,
+                        size = arcSize,
+                        style = Stroke(width = strokeWidth)
+                    )
+                    startAngle += sweep
+                }
             }
         }
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp),
-            horizontalArrangement = Arrangement.SpaceAround
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xB3161616), RoundedCornerShape(12.dp))
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            byDay.forEach { entry ->
-                Text(entry.key, color = labelColor, fontSize = 11.sp, textAlign = TextAlign.Center)
+            nonZero.forEach { (type, count) ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(12.dp)
+                            .background(categoryColors[type] ?: Color.Gray, CircleShape)
+                    )
+                    Text(
+                        exerciseNames[type] ?: "",
+                        color = Color(0xFFE0E0E0),
+                        style = AppTextStyles.missionBody(),
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(
+                        "$count",
+                        color = categoryColors[type] ?: Color.White,
+                        style = AppTextStyles.missionBody(),
+                        textAlign = TextAlign.End
+                    )
+                }
             }
         }
     }
@@ -168,7 +229,10 @@ private fun ExerciseTable(
             Button(
                 onClick = onDeleteAll,
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE53935),
+                    contentColor = Color.White
+                )
             ) {
                 Text(stringResource(R.string.delete_all_workouts), style = menuButtonTextStyle)
             }
@@ -186,10 +250,25 @@ private fun ExerciseTable(
                 ) {
                     Column {
                         Text(formatDate(exercise.timestamp), color = Color(0xFFE0E0E0), fontSize = 13.sp)
-                        Text("${exercise.count} приседаний", color = Color.White, style = AppTextStyles.menuButton())
+                        Text(
+                            "${exerciseNames[exercise.exerciseType]} — ${exercise.count}",
+                            color = Color.White,
+                            style = AppTextStyles.missionBody()
+                        )
+                        Text(
+                            categoryLabels[exercise.exerciseType] ?: "",
+                            color = categoryColors[exercise.exerciseType] ?: Color.Gray,
+                            style = AppTextStyles.badge()
+                        )
                     }
-                    TextButton(onClick = { onDelete(exercise) }) {
-                        Text(stringResource(R.string.delete_workout), color = Color(0xFFE53935))
+                    Button(
+                        onClick = { onDelete(exercise) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFE53935),
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Text(stringResource(R.string.delete_workout), style = AppTextStyles.badge())
                     }
                 }
             }

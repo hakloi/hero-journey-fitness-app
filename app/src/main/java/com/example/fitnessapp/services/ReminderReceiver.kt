@@ -1,4 +1,4 @@
-package com.example.fitnessapp
+package com.example.fitnessapp.services
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.example.fitnessapp.R
 import com.example.fitnessapp.screens.scheduleReminder
 
 class ReminderReceiver : BroadcastReceiver() {
@@ -20,14 +21,13 @@ class ReminderReceiver : BroadcastReceiver() {
         )
         manager.notify(1,
             NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.spider)
                 .setContentTitle("Hero Training Journey")
                 .setContentText("Time to train, hero! 🕷️")
                 .setAutoCancel(true)
                 .build()
         )
 
-        // Перепланируем на следующий день
         val prefs = context.getSharedPreferences("settings_prefs", Context.MODE_PRIVATE)
         if (!prefs.getBoolean("reminder_enabled", false)) return
         val hour = prefs.getInt("reminder_hour", 9)

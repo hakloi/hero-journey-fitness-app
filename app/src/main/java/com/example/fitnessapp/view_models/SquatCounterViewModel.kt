@@ -9,6 +9,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.math.*
 
+import com.example.fitnessapp.entities.ExerciseType
+
 class SquatCounterViewModel(
     private val sensor: Sensor,
     private val repository: FitnessRepository
@@ -90,7 +92,7 @@ class SquatCounterViewModel(
     fun saveCurrentSession() {
         if (currentSessionCount.value > 0) {
             viewModelScope.launch {
-                repository.addExercise(currentSessionCount.value)
+                repository.addExercise(currentSessionCount.value, ExerciseType.LOWER_BODY)
                 currentSessionCount.value = 0
             }
         }

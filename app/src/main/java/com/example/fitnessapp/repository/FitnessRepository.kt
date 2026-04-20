@@ -1,10 +1,10 @@
-// FitnessRepository.kt
 package com.example.fitnessapp.repository
 
 import com.example.fitnessapp.DAO.CalibrationDao
 import com.example.fitnessapp.DAO.ExerciseDao
 import com.example.fitnessapp.entities.CalibrationEntity
 import com.example.fitnessapp.entities.ExerciseEntity
+import com.example.fitnessapp.entities.ExerciseType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -39,9 +39,10 @@ class FitnessRepository @Inject constructor(
         return exerciseDao.getAllExercises()
     }
 
-    suspend fun addExercise(count: Int) {
+    suspend fun addExercise(count: Int, exerciseType: ExerciseType) {
         val exercise = ExerciseEntity(
             count = count,
+            exerciseType = exerciseType,
             timestamp = System.currentTimeMillis()
         )
         exerciseDao.addExercise(exercise)
@@ -49,6 +50,10 @@ class FitnessRepository @Inject constructor(
 
     fun getTotalSquats(): Flow<Int?> {
         return exerciseDao.getTotalSquats()
+    }
+
+    fun getTotalByType(type: ExerciseType): Flow<Int?> {
+        return exerciseDao.getTotalByType(type)
     }
 
     suspend fun deleteExercise(exercise: ExerciseEntity) {

@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <service android:name=".services.MusicService" />
-        <receiver android:name=".ReminderReceiver" android:exported="false" />
+        <receiver android:name=".services.ReminderReceiver" android:exported="false" />
     </application>
 
 </manifest>
