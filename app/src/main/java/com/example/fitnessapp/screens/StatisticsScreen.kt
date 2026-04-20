@@ -30,27 +30,30 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private val categoryColors = mapOf(
-    ExerciseType.CARDIO      to Color(0xFFE53935),
-    ExerciseType.LOWER_BODY  to Color(0xFF1E88E5),
-    ExerciseType.UPPER_BODY  to Color(0xFF43A047),
-    ExerciseType.CORE        to Color(0xFFFB8C00),
-    ExerciseType.MOBILITY    to Color(0xFF8E24AA)
+    ExerciseType.CARDIO to Color(0xFFE53935),
+    ExerciseType.LOWER_BODY to Color(0xFF1E88E5),
+    ExerciseType.UPPER_BODY to Color(0xFF43A047),
+    ExerciseType.CORE to Color(0xFFFB8C00),
+    ExerciseType.BALANCE to Color(0xFFFFF41E),
+    ExerciseType.MOBILITY to Color(0xFF8E24AA)
 )
 
 private val categoryLabels = mapOf(
-    ExerciseType.CARDIO      to "Cardio",
-    ExerciseType.LOWER_BODY  to "Lower Body",
-    ExerciseType.UPPER_BODY  to "Upper Body",
-    ExerciseType.CORE        to "Core",
-    ExerciseType.MOBILITY    to "Mobility"
+    ExerciseType.CARDIO to "Cardio",
+    ExerciseType.LOWER_BODY to "Lower Body",
+    ExerciseType.UPPER_BODY to "Upper Body",
+    ExerciseType.CORE to "Core",
+    ExerciseType.BALANCE to "Balance",
+    ExerciseType.MOBILITY to "Mobility"
 )
 
 private val exerciseNames = mapOf(
-    ExerciseType.CARDIO      to "Peter's Warmup",
-    ExerciseType.LOWER_BODY  to "Thunder Kick",
-    ExerciseType.UPPER_BODY  to "Wall Crawler",
-    ExerciseType.CORE        to "Leap of Faith",
-    ExerciseType.MOBILITY    to "Gwen's Rest"
+    ExerciseType.CARDIO to "Peter's Warmup",
+    ExerciseType.LOWER_BODY to "Thunder Kick",
+    ExerciseType.UPPER_BODY to "Wall Crawler",
+    ExerciseType.CORE to "Spider Plank",
+    ExerciseType.BALANCE to "Leap of Faith",
+    ExerciseType.MOBILITY to "Gwen's Rest"
 )
 
 @Composable

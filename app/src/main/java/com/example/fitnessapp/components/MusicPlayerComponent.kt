@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -52,10 +53,11 @@ fun MusicPlayerComponent(
     musicViewModel: MusicViewModel,
     modifier: Modifier = Modifier
 ) {
-    val isPlaying by musicViewModel.isMusicPlaying.collectAsStateWithLifecycle()
+    val isPlaying by musicViewModel.isMusicPlaying.collectAsState()
+        // .collectAsStateWithLifecycle() - не сработал, проверить!в
 
     var isCollapsed by rememberSaveable { mutableStateOf(false) }
-    var offsetX by rememberSaveable { mutableFloatStateOf(0f) }
+    var offsetX by rememberSaveable { mutableFloatStateOf(0f) } //смещение
     var offsetY by rememberSaveable { mutableFloatStateOf(0f) }
     var widgetSize by remember { mutableStateOf(Offset.Zero) }
     var isPositionInitialized by rememberSaveable { mutableStateOf(false) }
@@ -66,6 +68,7 @@ fun MusicPlayerComponent(
         val containerHeightPx = constraints.maxHeight.toFloat()
         val edgePaddingPx = with(density) { 16.dp.toPx() }
 
+        // границы перетаскивания
         val maxX = (containerWidthPx - widgetSize.x - edgePaddingPx).coerceAtLeast(edgePaddingPx)
         val maxY = (containerHeightPx - widgetSize.y - edgePaddingPx).coerceAtLeast(edgePaddingPx)
 
