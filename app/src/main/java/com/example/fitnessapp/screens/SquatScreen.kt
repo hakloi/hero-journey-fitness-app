@@ -258,6 +258,22 @@ fun SquatScreen(
             )
         }
 
+        // Кнопка - Калибровка (возможность откалиброваться, даже если уже были внесены данные)
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = { navController.navigate("calibration") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+            )
+        ) {
+            Text(
+                text = stringResource(R.string.calibration_button),
+                style = menuButtonTextStyle
+            )
+        }
+
         // Подсказка
         Spacer(modifier = Modifier.height(16.dp))
         Card(
