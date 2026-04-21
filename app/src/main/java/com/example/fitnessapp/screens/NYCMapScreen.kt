@@ -64,7 +64,7 @@ fun NYCMapScreen(navController: NavController) {
                 .graphicsLayer(translationY = offsetY)
         )
 
-        // сюда потом добавишь точки на карте
+        // сюда потом добавлю точки на карте
 
         Button(
             onClick = { navController.navigateUp() },

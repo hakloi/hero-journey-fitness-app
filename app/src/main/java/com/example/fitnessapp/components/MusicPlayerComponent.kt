@@ -41,9 +41,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.fitnessapp.R
 import com.example.fitnessapp.view_models.MusicViewModel
 import kotlin.math.roundToInt
 
@@ -66,7 +68,7 @@ fun MusicPlayerComponent(
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         val containerWidthPx = constraints.maxWidth.toFloat()
         val containerHeightPx = constraints.maxHeight.toFloat()
-        val edgePaddingPx = with(density) { 16.dp.toPx() }
+        val edgePaddingPx = with(density) { 16.dp.toPx() } // сенсорный экран работает в пикселях
 
         // границы перетаскивания
         val maxX = (containerWidthPx - widgetSize.x - edgePaddingPx).coerceAtLeast(edgePaddingPx)
@@ -121,7 +123,7 @@ fun MusicPlayerComponent(
                 if (isCollapsed) {
                     Icon(
                         imageVector = Icons.Default.Audiotrack,
-                        contentDescription = "Expand music player",
+                        contentDescription = stringResource(R.string.expand_music_player),
                         tint = Color.White,
                         modifier = Modifier
                             .size(32.dp)
@@ -138,7 +140,7 @@ fun MusicPlayerComponent(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Audiotrack,
-                            contentDescription = "Collapse music player",
+                            contentDescription = stringResource(R.string.collapse_music_player),
                             tint = Color.White,
                             modifier = Modifier
                                 .size(24.dp)
@@ -155,7 +157,9 @@ fun MusicPlayerComponent(
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Text(
-                                text = if (isPlaying) "Now Playing" else "Paused",
+                                text = if (isPlaying) stringResource(R.string.now_playing) else stringResource(
+                                    R.string.paused
+                                ),
                                 color = Color.White.copy(alpha = 0.85f),
                                 style = MaterialTheme.typography.bodySmall
                             )
@@ -176,7 +180,9 @@ fun MusicPlayerComponent(
                         ) {
                             Icon(
                                 imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                                contentDescription = if (isPlaying) "Pause" else "Play",
+                                contentDescription = if (isPlaying) stringResource(R.string.pause) else stringResource(
+                                    R.string.play
+                                ),
                                 tint = Color.White,
                                 modifier = Modifier.size(28.dp)
                             )

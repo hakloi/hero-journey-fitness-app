@@ -39,4 +39,10 @@
     <string name="settings_reminder_enable">Daily reminder</string>
     <string name="settings_reminder_time">Time: %1$02d:%2$02d</string>
     <string name="settings_reminder_change_time">Change time</string>
+    <string name="expand_music_player">Expand music player</string>
+    <string name="collapse_music_player">Collapse music player</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="paused">Paused</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
 </resources>
