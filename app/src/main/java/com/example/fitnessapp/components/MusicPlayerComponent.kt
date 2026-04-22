@@ -152,7 +152,7 @@ fun MusicPlayerComponent(
 
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Mount Eminest - Lofi",
+                                text = stringResource(R.string.music_track_name),
                                 color = Color.White,
                                 style = MaterialTheme.typography.titleMedium
                             )

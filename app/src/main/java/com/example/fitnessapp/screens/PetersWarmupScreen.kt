@@ -71,7 +71,12 @@ fun PetersWarmupScreen(
 
     var hasCameraPermission by remember { mutableStateOf(false) }
     var reps by remember { mutableIntStateOf(0) }
-    var phaseText by remember { mutableStateOf("Get ready") }
+    var phaseText by remember { mutableStateOf("") }
+    val stateReady = stringResource(R.string.peters_warmup_state_ready)
+    val stateOpen = stringResource(R.string.peters_warmup_state_open)
+    val stateClosed = stringResource(R.string.peters_warmup_state_closed)
+    val stateNopose = stringResource(R.string.peters_warmup_state_no_pose)
+    LaunchedEffect(Unit) { phaseText = stateReady }
     var jackState by remember { mutableStateOf(JumpingJackState.CLOSED) }
     var openFrames by remember { mutableIntStateOf(0) }
     var closedFrames by remember { mutableIntStateOf(0) }
@@ -79,7 +84,7 @@ fun PetersWarmupScreen(
     val missionBodyTextStyle = AppTextStyles.missionBody()
     val smallMenuButtonTextStyle = AppTextStyles.smallMenuButton()
 
-    val permissionLauncher = rememberLauncherForActivityResult(
+    val permissionLauncher = rememberLauncherForActivityResult( //для запуска системного диалгга
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { granted -> hasCameraPermission = granted }
     )
@@ -142,17 +147,17 @@ fun PetersWarmupScreen(
 
                                         if (jackState == JumpingJackState.CLOSED && openFrames >= 3) {
                                             jackState = JumpingJackState.OPEN
-                                            phaseText = "Open"
+                                            phaseText = stateOpen
                                             closedFrames = 0
                                         } else if (jackState == JumpingJackState.OPEN && closedFrames >= 3) {
                                             jackState = JumpingJackState.CLOSED
                                             reps += 1
-                                            phaseText = "Closed"
+                                            phaseText = stateClosed
                                             openFrames = 0
                                         }
                                     },
                                     onNoPose = {
-                                        phaseText = "Move into frame"
+                                        phaseText = stateNopose
                                         openFrames = 0
                                         closedFrames = 0
                                     }
@@ -179,7 +184,7 @@ fun PetersWarmupScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Camera permission is required",
+                        text = "Camera permission is required",
                     color = Color.White,
                     style = missionBodyTextStyle
                 )
@@ -199,17 +204,17 @@ fun PetersWarmupScreen(
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
-                        text = "Peter's Warmup: Jumping Jacks",
+                        text = stringResource(R.string.peters_warmup_title),
                         color = Color.White,
                         style = missionBodyTextStyle
                     )
                     Text(
-                        text = "Reps: $reps",
+                        text = stringResource(R.string.peters_warmup_reps, reps),
                         color = Color.White,
                         style = missionBodyTextStyle
                     )
                     Text(
-                        text = "State: $phaseText",
+                        text = stringResource(R.string.peters_warmup_state, phaseText),
                         color = Color.White,
                         style = missionBodyTextStyle
                     )

@@ -124,12 +124,8 @@ fun SquatScreen(
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
-                        text = "$totalCount",
+                        text = "$currentSessionCount",
                         style = MaterialTheme.typography.displayLarge
-                    )
-                    Text(
-                        text = stringResource(R.string.local_workout, currentSessionCount),
-                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }

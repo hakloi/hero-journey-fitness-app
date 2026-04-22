@@ -89,8 +89,7 @@ fun StatisticsScreen(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                StatSummaryItem("Missions", "$streak") // заглушка
-                StatSummaryItem("Streak", "$streak")
+                StatSummaryItem(stringResource(R.string.streak_label), "$streak")
                 StatSummaryItem(stringResource(R.string.total_workouts_label), "${exercises.size}")
             }
         }

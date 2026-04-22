@@ -38,7 +38,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.example.fitnessapp.R
 import com.example.fitnessapp.ui.theme.AppTextStyles
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -93,14 +95,14 @@ fun PatrolScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "Don't give up, hero",
+                    text = stringResource(R.string.patrol_title),
                     style = heroTitleStyle,
                     color = Color(0xFFE53935),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "Choose your training mission.",
+                    text = stringResource(R.string.patrol_subtitle),
                     style = cardBodyStyle,
                     color = Color(0xFFE0E0E0),
                     modifier = Modifier.fillMaxWidth(),
@@ -110,19 +112,19 @@ fun PatrolScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 MissionCard(
-                    title = "Peter's Warmup",
+                    title = stringResource(R.string.mission_peters_warmup),
                     enabled = true,
                     onClick = { navController.navigate("peters_warmup") }
                 )
 
                 MissionCard(
-                    title = "Wall Crawler",
+                    title = stringResource(R.string.mission_wall_crawler),
                     enabled = false,
                     onClick = {}
                 )
 
                 MissionCard(
-                    title = "Thunder Kick",
+                    title = stringResource(R.string.mission_thunder_kick),
                     enabled = true,
                     onClick = {
                         if (shouldAskCalibration) {
@@ -135,19 +137,19 @@ fun PatrolScreen(navController: NavController) {
                 )
 
                 MissionCard(
-                    title = "Spider Plank",
+                    title = stringResource(R.string.mission_spider_plank),
                     enabled = false,
                     onClick = {}
                 )
 
                 MissionCard(
-                    title = "Leap of Faith",
+                    title = stringResource(R.string.mission_leap_of_faith),
                     enabled = false,
                     onClick = {}
                 )
 
                 MissionCard(
-                    title = "Gwen's Rest",
+                    title = stringResource(R.string.mission_gwens_rest),
                     enabled = false,
                     onClick = {}
                 )
@@ -163,7 +165,7 @@ fun PatrolScreen(navController: NavController) {
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Back to Home", style = menuButtonTextStyle)
+                    Text(stringResource(R.string.patrol_back), style = menuButtonTextStyle)
                 }
             }
         }
@@ -176,7 +178,7 @@ fun PatrolScreen(navController: NavController) {
             containerColor = Color(0xFF161616),
             title = {
                 Text(
-                    text = "Need calibration first?",
+                    text = stringResource(R.string.calibration_dialog_title),
                     color = Color.White,
                     style = MaterialTheme.typography.titleLarge
                 )
@@ -184,7 +186,7 @@ fun PatrolScreen(navController: NavController) {
             text = {
                 Column {
                     Text(
-                        text = "Calibration improves squats accuracy. You can also calibrate later in Settings.",
+                        text = stringResource(R.string.calibration_dialog_text),
                         color = Color(0xFFE0E0E0),
                         style = dialogTextStyle
                     )
@@ -195,7 +197,7 @@ fun PatrolScreen(navController: NavController) {
                             onCheckedChange = { dontAskAgainChecked = it }
                         )
                         Text(
-                            text = "Don't ask again",
+                            text = stringResource(R.string.calibration_dialog_dont_ask),
                             color = Color.White,
                             style = dialogTextStyle
                         )
@@ -212,7 +214,7 @@ fun PatrolScreen(navController: NavController) {
                         navController.navigate("calibration")
                     }
                 ) {
-                    Text("Calibrate now")
+                    Text(stringResource(R.string.calibration_dialog_confirm))
                 }
             },
             dismissButton = {
@@ -225,7 +227,7 @@ fun PatrolScreen(navController: NavController) {
                         navController.navigate("squat")
                     }
                 ) {
-                    Text("Start workout")
+                    Text(stringResource(R.string.calibration_dialog_dismiss))
                 }
             }
         )
